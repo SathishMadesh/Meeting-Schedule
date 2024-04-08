@@ -8,6 +8,7 @@ import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 
 function TimeAvailability({ selectedDate }) {
   const [nextButtonIndex, setNextButtonIndex] = useState(-1);
+  const [clickedButtonIndex, setClickedButtonIndex] = useState(-1);
 
   if (!selectedDate) {
     return null;
@@ -22,6 +23,7 @@ function TimeAvailability({ selectedDate }) {
 
   const handleButtonClick = (index) => {
     setNextButtonIndex(index);
+    setClickedButtonIndex(index); // Update clicked button index
   };
 
   return (
@@ -30,7 +32,8 @@ function TimeAvailability({ selectedDate }) {
       {timings.map((time, index) => (
         <div key={index} className="relative">
           <button
-            className={`bg-white text-blue-500 border border-blue-500 px-4 py-2 rounded-lg mt-2 mr-6 hover:bg-blue-500 hover:text-white ${nextButtonIndex === index ? 'w-16' : 'w-32'}`}
+            className={`text-blue-500 border border-blue-500 px-4 py-2 rounded-lg mt-2 mr-6 hover:bg-blue-500 hover:text-white ${nextButtonIndex === index ? 'w-16' : 'w-32'}`}
+            style={{ backgroundColor: clickedButtonIndex === index ? 'gray' : 'white', borderColor: clickedButtonIndex === index ? 'gray' : 'blue', color: clickedButtonIndex === index ? 'white' : 'blue' }}
             onClick={() => handleButtonClick(index)}
           >
             {time}
@@ -43,6 +46,8 @@ function TimeAvailability({ selectedDate }) {
     </div>
   );
 }
+
+
 
 function App() {
   const days = ["S", "M", "T", "W", "T", "F", "S"];
