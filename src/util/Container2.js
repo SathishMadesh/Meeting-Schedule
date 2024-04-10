@@ -1,15 +1,13 @@
 import React from 'react';
-import cn from './cn';
-import EnterDetailsForm from './EnterDetailsForm';
+import dayjs from 'dayjs';
+import { generateDate } from "./calendar";
+import { months } from './calendar';
+import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 
-function Container2({ selectDate, today, currentDate, setToday, generateDate, days, months, setSelectDate, GrFormPrevious, GrFormNext }) {
-  const [showForm, setShowForm] = React.useState(false);
-  const [nextButtonIndex, setNextButtonIndex] = React.useState(-1);
-
-  const handleNextButtonClick = (index) => {
-    setNextButtonIndex(index);
-    setShowForm(true);
-  };
+function Container2({ selectDate, setSelectDate, handleNextButtonClick, setSelectedTime }) {
+  const days = ["S", "M", "T", "W", "T", "F", "S"];
+  const currentDate = dayjs();
+  const [today, setToday] = React.useState(currentDate);
 
   return (
     <div className="container2 w-full lg:w-96 h-auto lg:h-96 px-5">
@@ -28,38 +26,33 @@ function Container2({ selectDate, today, currentDate, setToday, generateDate, da
         </div>
       </div>
       <div className="w-full grid grid-cols-7">
-        {days.map((day, index) => {
-          return (
-            <h1 key={index} className="h-14 grid place-content-center text-sm">
-              {day}
-            </h1>
-          );
-        })}
+        {days.map((day, index) => (
+          <h1 key={index} className="h-14 grid place-content-center text-sm">
+            {day}
+          </h1>
+        ))}
       </div>
       <div className="w-full grid grid-cols-7">
-        {generateDate(today.month(), today.year()).map(({ date, currentMonth, today }, index) => {
-          return (
-            <div key={index} className="h-14 border-t grid place-content-center text-sm">
-              <h1 className={cn(
-                currentMonth ? "" : "text-gray-400",
-                today ? "bg-red-600 text-white" : "",
-                selectDate && selectDate.isSame(date, 'day') ? "bg-black text-white" : "",
-                "h-10 w-10 grid place-content-center rounded-full hover:bg-black hover:text-white transition-all cursor-pointer"
-              )}
-                onClick={() => {
-                  setSelectDate(date);
-                }}
-              >
-                {date.date()}
-              </h1>
-              {selectDate && selectDate.isSame(date, 'day') &&
-                <span className="absolute right-5 top-2 bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={() => handleNextButtonClick(index)}>Next</span>
-              }
-            </div>
-          )
-        })}
+        {generateDate(today.month(), today.year()).map(({ date, currentMonth, today }, index) => (
+          <div key={index} className="h-14 border-t grid place-content-center text-sm">
+            <h1
+              className={`${
+                currentMonth ? "" : "text-gray-400"
+              } ${
+                today ? "bg-red-600 text-white" : ""
+              } ${
+                "h-10 w-10 grid place-content-center rounded-full transition-all cursor-pointer " + (selectDate && selectDate.isSame(date, 'day') ? "bg-black text-white" : "hover:bg-black hover:text-white")
+              }`}
+              onClick={() => {
+                setSelectDate(date);
+              }}
+            >
+              {date.date()}
+            </h1>
+            {selectDate && selectDate.isSame(date, 'day')}
+          </div>
+        ))}
       </div>
-      {showForm && <EnterDetailsForm />}
     </div>
   );
 }

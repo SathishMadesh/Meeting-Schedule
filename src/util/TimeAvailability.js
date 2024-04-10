@@ -1,6 +1,7 @@
+// TimeAvailability.js
 import React, { useState } from 'react';
 
-function TimeAvailability({ selectedDate }) {
+function TimeAvailability({ selectedDate, setSelectedTime }) {
   const [selectedTiming, setSelectedTiming] = useState(null);
   const [showEnterDetails, setShowEnterDetails] = useState(false);
 
@@ -20,6 +21,7 @@ function TimeAvailability({ selectedDate }) {
 
   const handleNextButtonClick = () => {
     if (selectedTiming) {
+      setSelectedTime(selectedTiming); // Set selected time
       setShowEnterDetails(true);
     }
   };

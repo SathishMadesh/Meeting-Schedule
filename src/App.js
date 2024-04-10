@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import './App.css';
@@ -6,7 +7,6 @@ import Container2 from './util/Container2';
 import TimeAvailability from './util/TimeAvailability';
 import EnterDetails from './util/EnterDetailsForm';
 import { generateDate } from "./util/calendar";
-
 import { months } from './util/calendar';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 
@@ -14,15 +14,41 @@ function App() {
   const days = ["S", "M", "T", "W", "T", "F", "S"];
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
-  const [selectDate, setSelectDate] = useState(null); // Initially no date selected
-  const [showEnterDetails, setShowEnterDetails] = useState(false); // State to manage whether to show Enter Details component or not
+  const [selectDate, setSelectDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [showEnterDetails, setShowEnterDetails] = useState(false);
+
+  const handleNextButtonClick = (time) => {
+    setSelectedTime(time); // Update selected time state
+    setShowEnterDetails(true); // Show EnterDetails container
+  };
 
   return (
     <div className="flex flex-col lg:flex-row lg:w-3/4 mx-auto gap-10 h-screen items-center relative">
-      {showEnterDetails && <EnterDetails />}
-      <Container1 selectDate={selectDate} today={today} currentDate={currentDate} setToday={setToday} generateDate={generateDate} days={days} months={months} setSelectDate={setSelectDate} GrFormPrevious={GrFormPrevious} GrFormNext={GrFormNext} />
-      <Container2 selectDate={selectDate} today={today} currentDate={currentDate} setToday={setToday} generateDate={generateDate} days={days} months={months} setSelectDate={setSelectDate} GrFormPrevious={GrFormPrevious} GrFormNext={GrFormNext} setShowEnterDetails={setShowEnterDetails} />
-      <TimeAvailability selectedDate={selectDate} setShowEnterDetails={setShowEnterDetails} />
+      {showEnterDetails && <EnterDetails />} {/* Render EnterDetails container only when showEnterDetails is true */}
+      <Container1
+        selectDate={selectDate}
+        today={today}
+        currentDate={currentDate}
+        setToday={setToday}
+        generateDate={generateDate}
+        days={days}
+        months={months}
+        setSelectDate={setSelectDate}
+        GrFormPrevious={GrFormPrevious}
+        GrFormNext={GrFormNext}
+        selectedTime={selectedTime}
+      />
+      <Container2
+        selectDate={selectDate}
+        setSelectDate={setSelectDate}
+        handleNextButtonClick={handleNextButtonClick}
+      />
+      <TimeAvailability
+        selectedDate={selectDate}
+        setSelectedTime={setSelectedTime}
+        setShowEnterDetails={setShowEnterDetails} // Pass setShowEnterDetails function to TimeAvailability
+      />
     </div>
   );
 }
