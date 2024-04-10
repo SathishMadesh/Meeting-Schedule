@@ -5,10 +5,11 @@ import './App.css';
 import Container1 from './util/Container1';
 import Container2 from './util/Container2';
 import TimeAvailability from './util/TimeAvailability';
-import EnterDetails from './util/EnterDetailsForm';
 import { generateDate } from "./util/calendar";
 import { months } from './util/calendar';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
+import { Provider } from 'react-redux';
+import store from './util/Redux/store';
 
 function App() {
   const days = ["S", "M", "T", "W", "T", "F", "S"];
@@ -16,20 +17,15 @@ function App() {
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
 
   const handleNextButtonClick = (time) => {
     setSelectedTime(time); // Update selected time state
   };
 
-  const handleSchedule = (name, email) => {
-    setName(name); // Set the name state
-    setEmail(email); // Set the email state
-  };
-
   return (
+    <Provider store={store}>
     <div className="flex flex-col lg:flex-row lg:w-3/4 mx-auto gap-10 h-screen items-center relative">
+      
       <Container1
         selectDate={selectDate}
         today={today}
@@ -42,8 +38,6 @@ function App() {
         GrFormPrevious={GrFormPrevious}
         GrFormNext={GrFormNext}
         selectedTime={selectedTime}
-        name={name} // Pass the name state to Container1
-        email={email} // Pass the email state to Container1
       />
       <Container2
         selectDate={selectDate}
@@ -54,7 +48,9 @@ function App() {
         selectedDate={selectDate}
         setSelectedTime={setSelectedTime}
       />
+      
     </div>
+    </Provider>
   );
 }
 

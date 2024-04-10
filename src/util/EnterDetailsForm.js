@@ -1,28 +1,32 @@
 // EnterDetails.js
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateName, updateEmail } from './Redux/data/actions';
 
-function EnterDetails({ onSchedule }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+function EnterDetails() {
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    onSchedule(name, email);
+    e.preventDefault(); // Prevent default form submission behavior
+    const name = e.target.elements.name.value;
+    const email = e.target.elements.email.value;
+    dispatch(updateName(name));
+    dispatch(updateEmail(email));
   };
 
   return (
-    <div className="container">
+    <div>
       <h2>Enter Details</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div>
           <label>Name:</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="text" name="name" />
         </div>
-        <div className="form-group">
-          <label>Email ID:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" />
         </div>
-        <button type="submit">Schedule Event</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

@@ -1,12 +1,26 @@
-// TimeAvailability.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateName, updateEmail } from './Redux/data/actions';
 
 function TimeAvailability({ selectedDate, setSelectedTime }) {
   const [selectedTiming, setSelectedTiming] = useState(null);
   const [showEnterDetails, setShowEnterDetails] = useState(false);
+  const [showTimeAvailability, setShowTimeAvailability] = useState(true); // Added state for controlling the visibility
 
-  if (!selectedDate) {
-    return null;
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    const name = e.target.elements.name.value;
+    const email = e.target.elements.email.value;
+    dispatch(updateName(name));
+    dispatch(updateEmail(email));
+    setShowEnterDetails(false);
+    setShowTimeAvailability(false); // Hide TimeAvailability
+    e.preventDefault();
+  };
+
+  if (!selectedDate || !showTimeAvailability) {
+    return null; // Return null if either selectedDate is falsy or showTimeAvailability is false
   }
 
   const formattedDate = selectedDate.format('dddd, MMMM D');
@@ -19,9 +33,9 @@ function TimeAvailability({ selectedDate, setSelectedTime }) {
     setSelectedTiming(time);
   };
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = (e) => {
     if (selectedTiming) {
-      setSelectedTime(selectedTiming); // Set selected time
+      setSelectedTime(selectedTiming);
       setShowEnterDetails(true);
     }
   };
@@ -47,7 +61,7 @@ function TimeAvailability({ selectedDate, setSelectedTime }) {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-10">
           <div className="bg-white p-8 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Enter Details</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 font-semibold mb-2" htmlFor="name">Name:</label>
                 <input type="text" id="name" name="name" className="border border-gray-300 rounded-lg px-4 py-2 w-full" />
