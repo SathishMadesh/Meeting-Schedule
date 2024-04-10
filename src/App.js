@@ -16,16 +16,20 @@ function App() {
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [showEnterDetails, setShowEnterDetails] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleNextButtonClick = (time) => {
     setSelectedTime(time); // Update selected time state
-    setShowEnterDetails(true); // Show EnterDetails container
+  };
+
+  const handleSchedule = (name, email) => {
+    setName(name); // Set the name state
+    setEmail(email); // Set the email state
   };
 
   return (
     <div className="flex flex-col lg:flex-row lg:w-3/4 mx-auto gap-10 h-screen items-center relative">
-      {showEnterDetails && <EnterDetails />} {/* Render EnterDetails container only when showEnterDetails is true */}
       <Container1
         selectDate={selectDate}
         today={today}
@@ -38,6 +42,8 @@ function App() {
         GrFormPrevious={GrFormPrevious}
         GrFormNext={GrFormNext}
         selectedTime={selectedTime}
+        name={name} // Pass the name state to Container1
+        email={email} // Pass the email state to Container1
       />
       <Container2
         selectDate={selectDate}
@@ -47,7 +53,6 @@ function App() {
       <TimeAvailability
         selectedDate={selectDate}
         setSelectedTime={setSelectedTime}
-        setShowEnterDetails={setShowEnterDetails} // Pass setShowEnterDetails function to TimeAvailability
       />
     </div>
   );

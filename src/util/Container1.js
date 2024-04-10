@@ -1,7 +1,7 @@
+// Container1.js
 import React from 'react';
 
-function Container1({ selectDate, today, currentDate, setToday, generateDate, days, months, setSelectDate, selectedTime }) {
-  console.log(selectedTime)
+function Container1({ selectDate, selectedTime, name, email }) {
   return (
     <div className="container1 h-96 w-full lg:w-96 px-5 flex-col">
       <div className="border-b-2 p-4 grid place-content-center">
@@ -11,6 +11,12 @@ function Container1({ selectDate, today, currentDate, setToday, generateDate, da
         <h1 className="font-semibold">Schedule for {selectDate ? selectDate.toDate().toDateString() : 'Select a date'}</h1>
         {selectedTime && (
           <p>Meeting Time: {selectedTime}</p>
+        )}
+        {name && (
+          <p>Name: {name}</p>
+        )}
+        {email && (
+          <p>Email: {email}</p>
         )}
         <p>Book a meeting with our Scheduler.</p>
       </div>
